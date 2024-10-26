@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Solar System UI</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            pointer-events: none;
+            display: none;
+        }
+        #quizButton, #pauseButton, #resumeButton {
+            position: fixed;
+            bottom: 20px;
+            padding: 10px 20px;
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #quizButton { left: 20px; }
+        #pauseButton { right: 140px; }
+        #resumeButton { right: 20px; }
+        .menu {
+            position: fixed;
+            top: 60px; /* Creates some space from the Toggle Menu button */
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 15px; /* Adds padding within the menu container */
+            display: none;
+        }
+        
+        .menu-item {
+            position: relative;
+            cursor: pointer;
+            padding: 8px 15px; /* Adds padding within each menu item */
+            color: #fff;
+            margin-bottom: 10px; /* Space between each menu item */
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            margin-top: 5px;
+            z-index: 10;
+        }
+        .dropdown-item {
+            padding: 5px 15px; /* Adds padding within each dropdown item */
+            color: #fff;
+        }
+        .menu-item:hover .dropdown {
+            display: block;
+        }
+        #menuButton {
+            position: fixed;
+            top: 40px;
+            left: 20px;
+            padding: 10px;
+            background: #555;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .modal {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    .modal-content {
+        background-color: #333;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 5px;
+        width: 80%;
+        max-width: 600px;
+        color: white;
+        text-align: center;
+    }
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+        color: #fff;
+    }
+    </style>
+</head>
+<body>
+    <div id="tooltip" class="tooltip"></div>
+    <button id="menuButton" onclick="toggleMenu()">Toggle Menu</button>
+    <div class="menu" id="menu">
+        <div class="menu-item">The Solar System
+            <div class="dropdown">
+                <div class="dropdown-item">Sun</div>
+                <div class="dropdown-item">Mercury</div>
+                <div class="dropdown-item">Venus</div>
+                <div class="dropdown-item">Earth</div>
+                <div class="dropdown-item">Mars</div>
+                <div class="dropdown-item">Jupiter</div>
+                <div class="dropdown-item">Saturn</div>
+                <div class="dropdown-item">Uranus</div>
+                <div class="dropdown-item">Neptune</div>
+            </div>
+        </div>
+        <div class="menu-item">Important Dates</div>
+    </div>
+    <!-- Modal for planet information -->
+    <div id="planetModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="planetName"></h2>
+            <p id="planetInfo"></p>
+        </div>
+    </div>
+
+    <!-- Existing buttons -->
+    <button id="quizButton" onclick="startQuiz()">Take the Solar System Quiz!</button>
+    
+    <!-- New Pause and Resume buttons -->
+    <button id="pauseButton" onclick="pauseAnimation()">Pause</button>
+    <button id="resumeButton" onclick="resumeAnimation()">Resume</button>
+    <div class="menu-item" onclick="window.location.href='planets.html'">The Solar System</div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="solarSystem.js"></script>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+    </script>
+</body>
+</html>

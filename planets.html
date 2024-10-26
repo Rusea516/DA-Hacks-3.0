@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Planets in the Solar System</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #0b0c10;
+            color: #fff;
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5em;
+            text-align: center;
+            color: #66fcf1;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #45a29e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            text-decoration: none;
+        }
+        .planet-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+        .planet {
+            background: #1f2833;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            width: 100%;
+        }
+        .planet:hover {
+            background: #45a29e;
+            transform: scale(1.02);
+        }
+        .planet h3 {
+            margin: 10px 0 5px;
+            font-size: 1.2em;
+            color: #66fcf1;
+        }
+        .planet p {
+            font-size: 0.9em;
+            color: #c5c6c7;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+        }
+        .modal-content {
+            background-color: #1f2833;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #66fcf1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to Main Page Button -->
+    <a href="index.html" class="back-button">Back to Main Page</a>
+    
+    <h1>The Solar System</h1>
+    <div class="planet-grid">
+        <div class="planet" onclick="showPlanetInfo('Sun')">
+            <h3>Sun</h3>
+            <p>Our Solar System’s star</p>
+        </div>
+        <div class="planet" onclick="showPlanetInfo('Mercury')">
+            <h3>Mercury</h3>
+            <p>The closest planet to the Sun</p>
+        </div>
+        <div class="planet" onclick="showPlanetInfo('Venus')">
+            <h3>Venus</h3>
+            <p>Earth’s twin planet</p>
+        </div>
+        <div class="planet" onclick="showPlanetInfo('Earth')">
+            <h3>Earth</h3>
+            <p>Our home planet</p>
+        </div>
+        <div class="planet" onclick="showPlanetInfo('Mars')">
+            <h3>Mars</h3>
+            <p>The Red Planet</p>
+        </div>
+        <div class="planet" onclick="showPlanetInfo('Jupiter')">
+            <h3>Jupiter</h3>
+            <p>The largest planet</p>
+        </div>
+        <div class="planet" onclick="showPlanetInfo('Saturn')">
+            <h3>Saturn</h3>
+            <p>Known for its rings</p>
+        </div>
+        <div class="planet" onclick="showPlanetInfo('Uranus')">
+            <h3>Uranus</h3>
+            <p>Tilting planet with rings</p>
+        </div>
+        <div class="planet" onclick="showPlanetInfo('Neptune')">
+            <h3>Neptune</h3>
+            <p>The farthest planet</p>
+        </div>
+    </div>
+
+    <!-- Modal for planet information -->
+    <div id="planetModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="planetName"></h2>
+            <p id="planetInfo"></p>
+        </div>
+    </div>
+
+    <script>
+        // Data for each planet (add more details as needed)
+        const planetData = {
+            Sun: "The Sun is a G-type main-sequence star that constitutes 99.8% of the mass of the Solar System. Its core reaches temperatures of about 15 million degrees Celsius, where nuclear fusion converts hydrogen into helium, releasing energy that supports life on Earth.",
+            
+            Mercury: "Mercury is the closest planet to the Sun and has an extremely thin atmosphere, composed mainly of oxygen, sodium, and hydrogen. Its surface temperatures can range from 430°C during the day to -180°C at night, due to its lack of atmosphere to retain heat.",
+            
+            Venus: "Venus is often called Earth's twin due to its similar size and structure, but it has a dense atmosphere of carbon dioxide, creating a powerful greenhouse effect that raises surface temperatures to around 465°C, hotter than Mercury.",
+            
+            Earth: "Earth is the only planet known to support life, with abundant liquid water, a stable atmosphere, and a magnetic field that protects it from solar radiation. It has one moon and is uniquely positioned in the 'habitable zone' around the Sun.",
+            
+            Mars: "Mars, known as the Red Planet due to its iron oxide surface, has polar ice caps, a thin atmosphere mainly of carbon dioxide, and temperatures that can vary widely from -125°C in winter to 20°C in summer. It also has the largest volcano in the solar system, Olympus Mons.",
+            
+            Jupiter: "Jupiter is the largest planet, a gas giant composed mainly of hydrogen and helium. It has a Great Red Spot, a massive storm that has been active for at least 400 years. Jupiter has 79 moons, including Ganymede, the largest moon in the Solar System.",
+            
+            Saturn: "Saturn is best known for its extensive ring system, made of ice and rock particles. It is a gas giant similar to Jupiter and has 83 confirmed moons, with Titan being its largest and the second-largest moon in the Solar System.",
+            
+            Uranus: "Uranus has a unique tilt, rotating on its side at an angle of about 98 degrees. This tilt causes extreme seasonal variations. Uranus is an ice giant with an atmosphere mostly of hydrogen, helium, and methane, which gives it a blue-green color.",
+            
+            Neptune: "Neptune, the farthest planet from the Sun, is a cold and windy ice giant. Its atmosphere, also rich in hydrogen, helium, and methane, has large storm systems, including the Great Dark Spot, and supersonic winds reaching speeds up to 2,100 km/h."
+        };
+
+        function showPlanetInfo(planet) {
+            document.getElementById("planetName").innerText = planet;
+            document.getElementById("planetInfo").innerText = planetData[planet];
+            document.getElementById("planetModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("planetModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target === document.getElementById("planetModal")) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

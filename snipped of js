@@ -1,0 +1,26 @@
+planets.forEach(planet => {
+    const geometry = new THREE.SphereGeometry(planet.size, 64, 64);
+    const material = new THREE.MeshStandardMaterial({ map: planet.texture });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.userData = { name: planet.name, info: planet.info };
+    mesh.position.set(planet.distance, 0, 0);
+    planet.mesh = mesh;
+    planet.angle = 0;
+    scene.add(mesh);
+
+    // Add click event for planet
+    mesh.onClick = () => {
+        planetNameElem.textContent = planet.name;
+        planetInfoElem.textContent = planet.info;
+        planetModal.style.display = "block";
+    };
+
+    // Create labels for planets
+    const label = document.createElement('div');
+    label.textContent = planet.name;
+    label.style.position = 'absolute';
+    label.style.color = 'white';
+    label.style.pointerEvents = 'none';
+    document.body.appendChild(label);
+    planet.label = label;
+});
